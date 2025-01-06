@@ -58,13 +58,26 @@ h1 {
     font-size: 18px;
 }
 
-/* 當前3x3區域的淺藍和淺綠色交替 */
-.sudoku-cell:nth-child(9n+1), .sudoku-cell:nth-child(9n+2), .sudoku-cell:nth-child(9n+3) {
-    background-color: lightblue;
+/* 使用 ::nth-child 為每個 3x3 區域交替著色 */
+.sudoku-cell:nth-child(1), .sudoku-cell:nth-child(2), .sudoku-cell:nth-child(3),
+.sudoku-cell:nth-child(10), .sudoku-cell:nth-child(11), .sudoku-cell:nth-child(12),
+.sudoku-cell:nth-child(19), .sudoku-cell:nth-child(20), .sudoku-cell:nth-child(21),
+.sudoku-cell:nth-child(28), .sudoku-cell:nth-child(29), .sudoku-cell:nth-child(30),
+.sudoku-cell:nth-child(37), .sudoku-cell:nth-child(38), .sudoku-cell:nth-child(39),
+.sudoku-cell:nth-child(46), .sudoku-cell:nth-child(47), .sudoku-cell:nth-child(48),
+.sudoku-cell:nth-child(55), .sudoku-cell:nth-child(56), .sudoku-cell:nth-child(57) {
+    background-color: lightblue;  /* 淺藍色 */
 }
 
-.sudoku-cell:nth-child(9n+4), .sudoku-cell:nth-child(9n+5), .sudoku-cell:nth-child(9n+6) {
-    background-color: lightgreen;
+/* 其他區域交替使用淺綠色 */
+.sudoku-cell:nth-child(4), .sudoku-cell:nth-child(5), .sudoku-cell:nth-child(6),
+.sudoku-cell:nth-child(13), .sudoku-cell:nth-child(14), .sudoku-cell:nth-child(15),
+.sudoku-cell:nth-child(22), .sudoku-cell:nth-child(23), .sudoku-cell:nth-child(24),
+.sudoku-cell:nth-child(31), .sudoku-cell:nth-child(32), .sudoku-cell:nth-child(33),
+.sudoku-cell:nth-child(40), .sudoku-cell:nth-child(41), .sudoku-cell:nth-child(42),
+.sudoku-cell:nth-child(49), .sudoku-cell:nth-child(50), .sudoku-cell:nth-child(51),
+.sudoku-cell:nth-child(58), .sudoku-cell:nth-child(59), .sudoku-cell:nth-child(60) {
+    background-color: lightgreen;  /* 淺綠色 */
 }
 
 /* 每個3x3區域的邊框加粗 */
