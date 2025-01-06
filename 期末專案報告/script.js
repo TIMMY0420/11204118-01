@@ -58,11 +58,6 @@ function checkAnswer() {
     }
 }
 
-// 當按下 "中難度" 按鈕時顯示固定的題目
-document.getElementById('medium-btn').addEventListener('click', () => {
-    generateFixedSudoku();
-});
-
 // 當按下 "檢查答案" 按鈕時檢查答案
 document.getElementById('check-btn').addEventListener('click', () => {
     checkAnswer();
