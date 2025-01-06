@@ -22,8 +22,7 @@ h1 {
     color: #333;
 }
 
-
-/* 難度選擇按鈕 */
+/* 只保留中級難度的按鈕 */
 .difficulty-buttons {
     margin-bottom: 20px;
 }
@@ -88,6 +87,13 @@ h1 {
 
 .sudoku-cell:nth-child(n+28):nth-child(-n+36),
 .sudoku-cell:nth-child(n+57):nth-child(-n+63) {
+    border-bottom: 2px solid #333;
+}
+
+/* 在底部將 3x3 九宮格的邊界加粗 */
+.sudoku-cell:nth-child(73), .sudoku-cell:nth-child(74), .sudoku-cell:nth-child(75),
+.sudoku-cell:nth-child(76), .sudoku-cell:nth-child(77), .sudoku-cell:nth-child(78),
+.sudoku-cell:nth-child(79), .sudoku-cell:nth-child(80), .sudoku-cell:nth-child(81) {
     border-bottom: 2px solid #333;
 }
 
