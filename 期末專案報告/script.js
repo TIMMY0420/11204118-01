@@ -22,7 +22,6 @@ function createGrid() {
     }
 }
 
-
 // 檢查該位置的數字是否在同一行、同一列、同一九宮格內重複
 function isValid(board, row, col, num) {
     // 檢查行
