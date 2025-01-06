@@ -46,6 +46,7 @@ h1 {
     gap: 1px;
 }
 
+/* 每個格子的基本樣式 */
 .sudoku-cell {
     display: flex;
     justify-content: center;
@@ -57,14 +58,23 @@ h1 {
     font-size: 18px;
 }
 
-/* 加粗每個 3x3 九宮格的邊框 */
-.sudoku-grid .sudoku-cell:nth-child(3n) {
-    border-right: 2px solid #333; /* 加粗每個九宮格的右邊框 */
+/* 當前3x3區域的淺藍和淺綠色交替 */
+.sudoku-cell:nth-child(9n+1), .sudoku-cell:nth-child(9n+2), .sudoku-cell:nth-child(9n+3) {
+    background-color: lightblue;
 }
 
-.sudoku-grid .sudoku-cell:nth-child(n+28):nth-child(-n+36),
-.sudoku-grid .sudoku-cell:nth-child(n+57):nth-child(-n+63) {
-    border-bottom: 2px solid #333; /* 加粗每個九宮格的底邊框 */
+.sudoku-cell:nth-child(9n+4), .sudoku-cell:nth-child(9n+5), .sudoku-cell:nth-child(9n+6) {
+    background-color: lightgreen;
+}
+
+/* 每個3x3區域的邊框加粗 */
+.sudoku-cell:nth-child(3n) {
+    border-right: 2px solid #333;
+}
+
+.sudoku-cell:nth-child(n+28):nth-child(-n+36),
+.sudoku-cell:nth-child(n+57):nth-child(-n+63) {
+    border-bottom: 2px solid #333;
 }
 
 /* 輸入框樣式 */
