@@ -58,12 +58,12 @@ h1 {
 }
 
 .sudoku-grid .sudoku-cell:nth-child(3n) {
-    border-right: 2px solid #333;
+    border-right: 2px solid #333; /* 加粗每個九宮格的右邊框 */
 }
 
 .sudoku-grid .sudoku-cell:nth-child(n+28):nth-child(-n+36),
 .sudoku-grid .sudoku-cell:nth-child(n+57):nth-child(-n+63) {
-    border-bottom: 2px solid #333;
+    border-bottom: 2px solid #333; /* 加粗每個九宮格的底邊框 */
 }
 
 /* 輸入框樣式 */

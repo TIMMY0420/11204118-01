@@ -22,6 +22,37 @@ function createGrid() {
     }
 }
 
+// 檢查該位置的數字是否在同一行、同一列、同一九宮格內重複
+function isValid(board, row, col, num) {
+    // 檢查行
+    for (let c = 0; c < 9; c++) {
+        if (board[row][c] === num) {
+            return false;
+        }
+    }
+
+    // 檢查列
+    for (let r = 0; r < 9; r++) {
+        if (board[r][col] === num) {
+            return false;
+        }
+    }
+
+    // 檢查 3x3 九宮格
+    const startRow = Math.floor(row / 3) * 3;
+    const startCol = Math.floor(col / 3) * 3;
+
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (board[startRow + i][startCol + j] === num) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 // 生成隨機數獨題目（低、中、高難度）
 function generateSudoku(difficulty) {
     const cells = document.querySelectorAll('.sudoku-cell input');
@@ -39,17 +70,33 @@ function generateSudoku(difficulty) {
     cells.forEach(cell => cell.value = '');
 
     // 隨機生成題目
+    const board = Array.from({ length: 9 }, () => Array(9).fill(null)); // 數獨盤面
+
     const filledIndexes = new Set();
     while (filledIndexes.size < prefilledCount) {
         const index = Math.floor(Math.random() * 81); // 隨機選擇一個格子
-        filledIndexes.add(index);
-    }
+        if (!filledIndexes.has(index)) {
+            filledIndexes.add(index);
 
-    filledIndexes.forEach(index => {
-        const value = Math.floor(Math.random() * 9) + 1; // 隨機選擇一個1到9的數字
-        cells[index].value = value;
-        cells[index].disabled = true; // 禁用已填的格子
-    });
+            const row = Math.floor(index / 9);
+            const col = index % 9;
+            let num;
+            let attempts = 0;
+
+            // 確保數字不重複
+            do {
+                num = Math.floor(Math.random() * 9) + 1;
+                attempts++;
+                if (attempts > 20) {
+                    return; // 防止無限迴圈，若無法生成合法數字則退出
+                }
+            } while (!isValid(board, row, col, num));  // 確保數字不重複
+
+            board[row][col] = num;
+            cells[index].value = num;
+            cells[index].disabled = true; // 禁用已填的格子
+        }
+    }
 }
 
 // 檢查數獨的正確性
