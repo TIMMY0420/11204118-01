@@ -13,43 +13,78 @@ const fixedBoard = [
 
 // 顯示固定盤面
 function generateFixedSudoku() {
-    const cells = document.querySelectorAll('.sudoku-cell input');
+    const grid = document.querySelector('.sudoku-grid');
+    grid.innerHTML = '';  // 清空格子
 
-    // 清空所有輸入框
-    cells.forEach(cell => cell.value = '');
+    // 生成 9x9 格子
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            const cell = document.createElement('div');
+            cell.classList.add('sudoku-cell');
+            
+            // 在每個格子中添加輸入框
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = 1;
+            input.max = 9;
+            input.maxLength = 1;
+            cell.appendChild(input);
 
-    // 顯示固定盤面
-    fixedBoard.forEach((row, rowIndex) => {
-        row.forEach((value, colIndex) => {
-            const index = rowIndex * 9 + colIndex;
-            if (value !== null) {
-                cells[index].value = value;
-                cells[index].disabled = true;  // 禁用輸入框，這些格子是預設的
+            // 設置初始數字並禁用已填寫的格子
+            if (fixedBoard[row][col] !== null) {
+                input.value = fixedBoard[row][col];
+                input.disabled = true;  // 禁用這些格子
             }
-        });
-    });
+
+            // 當該格子為空時，只能輸入數字 1~9
+            else {
+                input.addEventListener('input', function() {
+                    let value = parseInt(input.value);
+                    if (value < 1 || value > 9) {
+                        input.value = '';  // 如果不是 1~9 之間的數字，則清空
+                    }
+                });
+            }
+
+            grid.appendChild(cell);
+        }
+    }
 }
 
 // 檢查答案
 function checkAnswer() {
     const cells = document.querySelectorAll('.sudoku-cell input');
     let isCorrect = true;
+    const message = document.getElementById('message');
+    let isEmpty = false;  // 用來檢查是否有空格未填
+
+    // 清除先前的錯誤標註
+    cells.forEach(cell => {
+        cell.style.backgroundColor = '';  // 清除背景顏色
+    });
 
     fixedBoard.forEach((row, rowIndex) => {
         row.forEach((value, colIndex) => {
             const index = rowIndex * 9 + colIndex;
             const inputValue = parseInt(cells[index].value);
+
+            // 檢查是否有空格未填
+            if (cells[index].value === '') {
+                isEmpty = true;
+            }
+
+            // 檢查用戶輸入的答案是否正確
             if (value !== null && value !== inputValue) {
                 isCorrect = false;
                 cells[index].style.backgroundColor = 'red';  // 標記錯誤的格子
-            } else {
-                cells[index].style.backgroundColor = '';  // 清除背景顏色
             }
         });
     });
 
-    const message = document.getElementById('message');
-    if (isCorrect) {
+    if (isEmpty) {
+        message.textContent = '請填寫所有空格！';
+        message.style.color = 'orange';
+    } else if (isCorrect) {
         message.textContent = '恭喜！答對了！';
         message.style.color = 'green';
     } else {
