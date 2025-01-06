@@ -1,98 +1,72 @@
-// 生成 9x9 數獨格子
-const grid = document.querySelector('.sudoku-grid');
+// 固定的數獨盤面（這是一個有解的盤面，含有空白格子）
+const fixedBoard = [
+    [5, 3, null, null, 7, null, null, null, null],
+    [6, null, null, 1, 9, 5, null, null, null],
+    [null, 9, 8, null, null, null, null, 6, null],
+    [8, null, null, null, 6, null, null, null, 3],
+    [4, null, null, 8, null, 3, null, null, 1],
+    [7, null, null, null, 2, null, null, null, 6],
+    [null, 6, null, null, null, null, 2, 8, null],
+    [null, null, null, 4, 1, 9, null, null, 5],
+    [null, null, null, null, 8, null, null, 7, 9]
+];
 
-// 隨機生成 9x9 數獨格子
-function createGrid() {
-    grid.innerHTML = ''; // 清空現有的格子
-    for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-            const cell = document.createElement('div');
-            cell.classList.add('sudoku-cell');
-
-            // 在每個格子中添加一個輸入框
-            const input = document.createElement('input');
-            input.type = 'number';
-            input.min = 1;
-            input.max = 9;
-            input.maxLength = 1;  // 只允許一個數字
-
-            cell.appendChild(input);
-            grid.appendChild(cell);
-        }
-    }
-}
-
-// 檢查該位置的數字是否在同一行、同一列、同一九宮格內重複
-function isValid(board, row, col, num) {
-    // 檢查行
-    for (let c = 0; c < 9; c++) {
-        if (board[row][c] === num) {
-            return false;
-        }
-    }
-
-    // 檢查列
-    for (let r = 0; r < 9; r++) {
-        if (board[r][col] === num) {
-            return false;
-        }
-    }
-
-    // 檢查 3x3 九宮格
-    const startRow = Math.floor(row / 3) * 3;
-    const startCol = Math.floor(col / 3) * 3;
-
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            if (board[startRow + i][startCol + j] === num) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
-// 生成中等難度的數獨題目
-function generateSudoku(difficulty) {
+// 顯示固定盤面
+function generateFixedSudoku() {
     const cells = document.querySelectorAll('.sudoku-cell input');
-    let prefilledCount = 30;  // 中等難度，30個預填數字
 
     // 清空所有輸入框
     cells.forEach(cell => cell.value = '');
 
-    // 隨機生成題目
-    const board = Array.from({ length: 9 }, () => Array(9).fill(null)); // 數獨盤面
-
-    const filledIndexes = new Set();
-    while (filledIndexes.size < prefilledCount) {
-        const index = Math.floor(Math.random() * 81); // 隨機選擇一個格子
-        if (!filledIndexes.has(index)) {
-            filledIndexes.add(index);
-
-            const row = Math.floor(index / 9);
-            const col = index % 9;
-            let num;
-            let attempts = 0;
-
-            // 確保數字不重複
-            do {
-                num = Math.floor(Math.random() * 9) + 1;
-                attempts++;
-            } while (!isValid(board, row, col, num) && attempts < 10);
-
-            if (attempts < 10) {
-                board[row][col] = num;
-                cells[index].value = num;
+    // 顯示固定盤面
+    fixedBoard.forEach((row, rowIndex) => {
+        row.forEach((value, colIndex) => {
+            const index = rowIndex * 9 + colIndex;
+            if (value !== null) {
+                cells[index].value = value;
+                cells[index].disabled = true;  // 禁用輸入框，這些格子是預設的
             }
-        }
+        });
+    });
+}
+
+// 檢查答案
+function checkAnswer() {
+    const cells = document.querySelectorAll('.sudoku-cell input');
+    let isCorrect = true;
+
+    fixedBoard.forEach((row, rowIndex) => {
+        row.forEach((value, colIndex) => {
+            const index = rowIndex * 9 + colIndex;
+            const inputValue = parseInt(cells[index].value);
+            if (value !== null && value !== inputValue) {
+                isCorrect = false;
+                cells[index].style.backgroundColor = 'red';  // 標記錯誤的格子
+            } else {
+                cells[index].style.backgroundColor = '';  // 清除背景顏色
+            }
+        });
+    });
+
+    const message = document.getElementById('message');
+    if (isCorrect) {
+        message.textContent = '恭喜！答對了！';
+        message.style.color = 'green';
+    } else {
+        message.textContent = '答案錯誤，請再試一次！';
+        message.style.color = 'red';
     }
 }
 
-// 當前只使用中等難度
+// 當按下 "中難度" 按鈕時顯示固定的題目
 document.getElementById('medium-btn').addEventListener('click', () => {
-    generateSudoku('medium');
+    generateFixedSudoku();
 });
 
-createGrid();
-generateSudoku('medium');
+// 當按下 "檢查答案" 按鈕時檢查答案
+document.getElementById('check-btn').addEventListener('click', () => {
+    checkAnswer();
+});
+
+// 預設生成固定題目
+generateFixedSudoku();
