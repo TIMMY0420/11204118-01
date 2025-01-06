@@ -1,84 +1,98 @@
-
-
-// 生成 9x9 數獨格子
-const grid = document.querySelector('.sudoku-grid');
-
-// 生成 9x9 的格子
-for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-        const cell = document.createElement('div');
-        cell.classList.add('sudoku-cell');
-
-        // 在每個格子中添加一個輸入框
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.min = 1;
-        input.max = 9;
-        input.maxLength = 1;  // 只允許一個數字
-
-        cell.appendChild(input);
-        grid.appendChild(cell);
-    }
+/* 基本佈局 */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
 }
 
-// 檢查數獨的正確性
-function checkSudoku() {
-    const cells = document.querySelectorAll('.sudoku-cell input');
-    const message = document.getElementById('message');
-    let isValid = true;
-
-    // 檢查每行
-    for (let i = 0; i < 9; i++) {
-        const rowValues = new Set();
-        for (let j = 0; j < 9; j++) {
-            const cellValue = cells[i * 9 + j].value;
-            if (cellValue && rowValues.has(cellValue)) {
-                isValid = false;
-                break;
-            }
-            rowValues.add(cellValue);
-        }
-    }
-
-    // 檢查每列
-    for (let j = 0; j < 9; j++) {
-        const colValues = new Set();
-        for (let i = 0; i < 9; i++) {
-            const cellValue = cells[i * 9 + j].value;
-            if (cellValue && colValues.has(cellValue)) {
-                isValid = false;
-                break;
-            }
-            colValues.add(cellValue);
-        }
-    }
-
-    // 檢查每個 3x3 九宮格
-    for (let r = 0; r < 9; r += 3) {
-        for (let c = 0; c < 9; c += 3) {
-            const blockValues = new Set();
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 3; j++) {
-                    const cellValue = cells[(r + i) * 9 + (c + j)].value;
-                    if (cellValue && blockValues.has(cellValue)) {
-                        isValid = false;
-                        break;
-                    }
-                    blockValues.add(cellValue);
-                }
-            }
-        }
-    }
-
-    // 顯示檢查結果
-    if (isValid) {
-        message.textContent = '數獨完成！';
-        message.style.color = 'green';
-    } else {
-        message.textContent = '數獨錯誤，請檢查並修正！';
-        message.style.color = 'red';
-    }
+.sudoku-container {
+    border: 2px solid #333;
+    padding: 20px;
+    background-color: white;
+    text-align: center;
+    width: 450px;
 }
 
-// 綁定按鈕事件
-document.getElementById('check-btn').addEventListener('click', checkSudoku);
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+/* 難度選擇按鈕 */
+.difficulty-buttons {
+    margin-bottom: 20px;
+}
+
+.difficulty-buttons button {
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.difficulty-buttons button:hover {
+    background-color: #ddd;
+}
+
+/* 數獨格子佈局 */
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 50px);
+    grid-template-rows: repeat(9, 50px);
+    gap: 1px;
+}
+
+.sudoku-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    font-size: 18px;
+}
+
+.sudoku-grid .sudoku-cell:nth-child(3n) {
+    border-right: 2px solid #333; /* 加粗每個九宮格的右邊框 */
+}
+
+.sudoku-grid .sudoku-cell:nth-child(n+28):nth-child(-n+36),
+.sudoku-grid .sudoku-cell:nth-child(n+57):nth-child(-n+63) {
+    border-bottom: 2px solid #333; /* 加粗每個九宮格的底邊框 */
+}
+
+/* 輸入框樣式 */
+.sudoku-cell input {
+    border: none;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    background-color: transparent;
+    outline: none;
+}
+
+/* 顯示訊息 */
+#message {
+    margin-top: 10px;
+    font-size: 18px;
+    color: green;
+}
+
+#check-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#check-btn:hover {
+    background-color: #555;
+}
