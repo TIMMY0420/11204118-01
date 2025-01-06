@@ -57,6 +57,7 @@ h1 {
     font-size: 18px;
 }
 
+/* 加粗每個 3x3 九宮格的邊框 */
 .sudoku-grid .sudoku-cell:nth-child(3n) {
     border-right: 2px solid #333; /* 加粗每個九宮格的右邊框 */
 }
