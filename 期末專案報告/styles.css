@@ -38,18 +38,37 @@ h1 {
     width: 50px;
     height: 50px;
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    border: 3px solid #000; /* 每個格子的邊框設為 3px */
     font-size: 18px;
 }
 
-/* 每行和每列的邊線加粗 */
+/* 每列的右邊框和每行的底邊框設為 3px */
 .sudoku-cell:nth-child(3n) {
-    border-right: 2px solid #333;
+    border-right: 3px solid #000; /* 3px 右邊框 */
 }
 
 .sudoku-cell:nth-child(n+28):nth-child(-n+36),
 .sudoku-cell:nth-child(n+57):nth-child(-n+63) {
-    border-bottom: 2px solid #333;
+    border-bottom: 3px solid #000; /* 3px 底邊框 */
+}
+
+/* 所有 3x3 區域的邊框設為 4px */
+.sudoku-cell:nth-child(3n+1):nth-child(-n+9),
+.sudoku-cell:nth-child(30n+1):nth-child(-n+9) {
+    border-left: 3px solid #000; /* 每個小九宮格的左邊設為 3px */
+}
+
+.sudoku-cell:nth-child(9n+9):nth-child(-n+9) {
+    border-right: 3px solid #000; /* 每個小九宮格的右邊設為 3px */
+}
+
+.sudoku-cell:nth-child(3n) {
+    border-bottom: 3px solid #000; /* 每個小九宮格底部設為 3px */
+}
+
+/* 已填入數字的格子背景顏色 */
+.sudoku-cell.filled {
+    background-color: #dcdcdc; /* 淺灰色 */
 }
 
 /* 輸入框樣式 */
@@ -61,11 +80,6 @@ h1 {
     font-size: 18px;
     background-color: transparent;
     outline: none;
-}
-
-/* 禁用的格子的樣式 */
-.sudoku-cell input:disabled {
-    background-color: #e0e0e0;  /* 灰色背景表示禁用 */
 }
 
 /* 顯示訊息 */
