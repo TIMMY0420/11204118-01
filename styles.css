@@ -22,22 +22,6 @@ h1 {
     color: #333;
 }
 
-/* 只保留中級難度的按鈕 */
-.difficulty-buttons {
-    margin-bottom: 20px;
-}
-
-.difficulty-buttons button {
-    padding: 10px;
-    font-size: 16px;
-    margin: 5px;
-    cursor: pointer;
-}
-
-.difficulty-buttons button:hover {
-    background-color: #ddd;
-}
-
 /* 數獨格子佈局 */
 .sudoku-grid {
     display: grid;
@@ -54,11 +38,40 @@ h1 {
     width: 50px;
     height: 50px;
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    border: 3px solid #000; /* 每個格子的邊框設為 3px */
     font-size: 18px;
 }
 
-/* 每個格子分隔線樣式 */
+/* 每列的右邊框和每行的底邊框設為 3px */
+.sudoku-cell:nth-child(3n) {
+    border-right: 3px solid #000; /* 3px 右邊框 */
+}
+
+.sudoku-cell:nth-child(n+28):nth-child(-n+36),
+.sudoku-cell:nth-child(n+57):nth-child(-n+63) {
+    border-bottom: 3px solid #000; /* 3px 底邊框 */
+}
+
+/* 所有 3x3 區域的邊框設為 4px */
+.sudoku-cell:nth-child(3n+1):nth-child(-n+9),
+.sudoku-cell:nth-child(30n+1):nth-child(-n+9) {
+    border-left: 3px solid #000; /* 每個小九宮格的左邊設為 3px */
+}
+
+.sudoku-cell:nth-child(9n+9):nth-child(-n+9) {
+    border-right: 3px solid #000; /* 每個小九宮格的右邊設為 3px */
+}
+
+.sudoku-cell:nth-child(3n) {
+    border-bottom: 3px solid #000; /* 每個小九宮格底部設為 3px */
+}
+
+/* 已填入數字的格子背景顏色 */
+.sudoku-cell.filled {
+    background-color: #dcdcdc; /* 淺灰色 */
+}
+
+/* 輸入框樣式 */
 .sudoku-cell input {
     border: none;
     text-align: center;
@@ -69,28 +82,6 @@ h1 {
     outline: none;
 }
 
-/* 加粗九宮格的邊線 */
-.sudoku-cell:nth-child(3n) {
-    border-right: 2px solid #333;
-}
-
-.sudoku-cell:nth-child(n+28):nth-child(-n+36),
-.sudoku-cell:nth-child(n+57):nth-child(-n+63) {
-    border-bottom: 2px solid #333;
-}
-
-.sudoku-cell:nth-child(9), .sudoku-cell:nth-child(18), .sudoku-cell:nth-child(27),
-.sudoku-cell:nth-child(36), .sudoku-cell:nth-child(45), .sudoku-cell:nth-child(54),
-.sudoku-cell:nth-child(63), .sudoku-cell:nth-child(72), .sudoku-cell:nth-child(81) {
-    border-right: 2px solid #333;
-}
-
-.sudoku-cell:nth-child(73), .sudoku-cell:nth-child(74), .sudoku-cell:nth-child(75),
-.sudoku-cell:nth-child(76), .sudoku-cell:nth-child(77), .sudoku-cell:nth-child(78),
-.sudoku-cell:nth-child(79), .sudoku-cell:nth-child(80), .sudoku-cell:nth-child(81) {
-    border-bottom: 2px solid #333;
-}
-
 /* 顯示訊息 */
 #message {
     margin-top: 10px;
@@ -98,8 +89,7 @@ h1 {
     color: green;
 }
 
-/* 按鈕樣式 */
-#check-btn, #reset-btn {
+#check-btn {
     margin-top: 20px;
     padding: 10px 20px;
     background-color: #333;
@@ -108,6 +98,6 @@ h1 {
     cursor: pointer;
 }
 
-#check-btn:hover, #reset-btn:hover {
+#check-btn:hover {
     background-color: #555;
 }

@@ -1,7 +1,20 @@
 // 生成 9x9 數獨格子
 const grid = document.querySelector('.sudoku-grid');
 
-// 隨機生成 9x9 數獨格子
+// 固定的數獨題目（部分已填入數字的題目）
+const puzzle = [
+    [5, 3, null, null, 7, null, null, null, null],
+    [6, null, null, 1, 9, 5, null, null, null],
+    [null, 9, 8, null, null, null, null, 6, null],
+    [8, null, null, 7, null, null, null, null, 3],
+    [4, null, null, 8, null, 3, null, null, 1],
+    [7, null, null, null, 2, null, null, null, 6],
+    [null, 6, null, null, null, null, 2, 8, null],
+    [null, null, null, 4, 1, 9, null, null, 5],
+    [null, null, null, null, 8, null, null, 7, 9]
+];
+
+// 生成 9x9 數獨格子
 function createGrid() {
     grid.innerHTML = ''; // 清空現有的格子
     for (let row = 0; row < 9; row++) {
@@ -15,6 +28,12 @@ function createGrid() {
             input.min = 1;
             input.max = 9;
             input.maxLength = 1;  // 只允許一個數字
+
+            // 如果該格子在題目中已有數字，則設置為只讀
+            if (puzzle[row][col] !== null) {
+                input.value = puzzle[row][col];
+                input.disabled = true;  // 禁用已填入的格子
+            }
 
             cell.appendChild(input);
             grid.appendChild(cell);
@@ -53,46 +72,48 @@ function isValid(board, row, col, num) {
     return true;
 }
 
-// 生成中等難度的數獨題目
-function generateSudoku(difficulty) {
+// 檢查玩家填寫的答案
+function checkAnswer() {
     const cells = document.querySelectorAll('.sudoku-cell input');
-    let prefilledCount = 30;  // 中等難度，30個預填數字
+    let isCorrect = true;
+    let isComplete = true;
 
-    // 清空所有輸入框
-    cells.forEach(cell => cell.value = '');
+    // 檢查每個格子的數字
+    for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i];
+        const row = Math.floor(i / 9);
+        const col = i % 9;
+        const playerValue = parseInt(cell.value);
 
-    // 隨機生成題目
-    const board = Array.from({ length: 9 }, () => Array(9).fill(null)); // 數獨盤面
-
-    const filledIndexes = new Set();
-    while (filledIndexes.size < prefilledCount) {
-        const index = Math.floor(Math.random() * 81); // 隨機選擇一個格子
-        if (!filledIndexes.has(index)) {
-            filledIndexes.add(index);
-
-            const row = Math.floor(index / 9);
-            const col = index % 9;
-            let num;
-            let attempts = 0;
-
-            // 確保數字不重複
-            do {
-                num = Math.floor(Math.random() * 9) + 1;
-                attempts++;
-            } while (!isValid(board, row, col, num) && attempts < 10);
-
-            if (attempts < 10) {
-                board[row][col] = num;
-                cells[index].value = num;
-            }
+        // 如果該格子沒有填寫數字，則跳過檢查
+        if (cell.value === '') {
+            isComplete = false;  // 如果有格子沒有填寫
+            continue;
         }
+
+        // 進行數字比對
+        if (playerValue !== puzzle[row][col]) {
+            isCorrect = false;
+            break; // 一旦有錯誤，停止檢查
+        }
+    }
+
+    // 顯示結果
+    const message = document.getElementById('message');
+    if (!isComplete) {
+        message.textContent = "請完成空格";
+        message.style.color = 'orange';
+    } else if (isCorrect) {
+        message.textContent = "恭喜你，答案正確！";
+        message.style.color = 'green';
+    } else {
+        message.textContent = "答案錯誤，請再試一次！";
+        message.style.color = 'red';
     }
 }
 
-// 當前只使用中等難度
-document.getElementById('medium-btn').addEventListener('click', () => {
-    generateSudoku('medium');
-});
+// 按鈕事件
+document.getElementById('check-btn').addEventListener('click', checkAnswer);
 
+// 初始化遊戲
 createGrid();
-generateSudoku('medium');
