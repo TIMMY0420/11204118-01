@@ -55,20 +55,15 @@ h1 {
 /* 所有 3x3 區域的邊框設為 4px */
 .sudoku-cell:nth-child(3n+1):nth-child(-n+9),
 .sudoku-cell:nth-child(30n+1):nth-child(-n+9) {
-    border-left: 3px solid #000; /* 每個小九宮格的左邊設為 3px */
+    border-left: 4px solid #000; /* 每個小九宮格的左邊設為 4px */
 }
 
 .sudoku-cell:nth-child(9n+9):nth-child(-n+9) {
-    border-right: 3px solid #000; /* 每個小九宮格的右邊設為 3px */
+    border-right: 4px solid #000; /* 每個小九宮格的右邊設為 4px */
 }
 
 .sudoku-cell:nth-child(3n) {
-    border-bottom: 3px solid #000; /* 每個小九宮格底部設為 3px */
-}
-
-/* 已填入數字的格子背景顏色 */
-.sudoku-cell.filled {
-    background-color: #dcdcdc; /* 淺灰色 */
+    border-bottom: 4px solid #000; /* 每個小九宮格底部設為 4px */
 }
 
 /* 輸入框樣式 */
